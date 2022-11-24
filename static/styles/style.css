@@ -1,0 +1,25 @@
+
+@font-face {
+  font-family: 'Bulgeria';
+  src: URL('Paleo-Kids.ttf');
+}
+
+body{
+    text-align: center;
+    margin-top: 70px;
+    /*font-family: Impact, fantasy;*/
+    font-family: Bulgeria;
+    font-weight: bold;
+    background-color: #252525;
+    color: white;
+}
+
+table{
+    margin: auto;
+}
+
+a{
+    text-align: center;
+    font-weight: bold;
+    font-size: 20px;
+}

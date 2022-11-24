@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>reportMonaco2018</title>
+    <link rel= "stylesheet" type= "text/css" href="{{ url_for('static',filename='styles/style.css') }}">
+</head>
+<body>
+
+<table>
+{% for num, (name, car, result) in content %}
+    <tr>
+        <th>{{num}}</th>
+        <th>{{name}}</th>
+        <th>{{car}}</th>
+        <th>{{result}}</th>
+    </tr>
+{% endfor %}
+</table>
+
+<br><br>
+
+<a href="/report/drivers">drivers</a><br><a href="/report/?order=desc">reverse</a>
+</body>
+</html>
