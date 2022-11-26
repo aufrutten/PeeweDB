@@ -46,7 +46,7 @@ class TestV1:
         assert content['message'] == 'you wrote uncorrected version for parser?'
 
     def test_if_user_forgot_required_arguments(self):
-        response = app.test_client().get('http://127.0.0.1:5000/api/V1/report/')
+        response = app.test_client().get('http://127.0.0.1:5000/api/V1/report/?format=')
         content = json.loads(response.json)
 
         assert content['status_code'] == 404

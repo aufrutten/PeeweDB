@@ -1,5 +1,4 @@
 from flask import Blueprint, render_template, request, current_app
-from reportMonaco import report
 
 simple_page = Blueprint('simple_page', __name__,
                         template_folder='templates',
@@ -10,14 +9,18 @@ simple_page = Blueprint('simple_page', __name__,
 @simple_page.route('/')
 def parent_route():
     reverse_mode = True if request.values.get('order') else False
-    data = report.print_report(current_app.config.get('path_to_folder'), html=True, reverse=reverse_mode)
-    return render_template('index.html', content=enumerate(data))
+    database = current_app.config['drivers']
+    data = [[driver.name, driver.car, driver.result] for driver in database.select().order_by(database.result)]
+    if reverse_mode:
+        data.reverse()
+    return render_template('index.html', content=enumerate(data, start=1))
 
 
 @simple_page.route('/report/drivers/')
 def drivers():
-    list_with_results = report.get_drivers(current_app.config.get('path_to_folder'))
-    data = report.build_report(current_app.config.get('path_to_folder'))[0]
+    database = current_app.config['drivers']
+    list_with_results = [[num, driver.name, driver.abbr] for num, driver in enumerate(
+        database.select().order_by(database.result), start=1)]
 
     abbr = request.values.get('driver')
     reverse_mode = True if request.values.get('order') else False
@@ -26,7 +29,8 @@ def drivers():
         list_with_results.reverse()
 
     if abbr:
-        content = report.find_driver(data[abbr]['name'], current_app.config.get('path_to_folder'))[0]
+        driver = database.select().where(database.abbr == abbr).get()
+        content = [driver.name, driver.car, driver.result]
         return render_template('drivers.html', driver=content)
     else:
         return render_template('drivers.html', drivers=list_with_results)
