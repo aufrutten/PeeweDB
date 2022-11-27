@@ -4,8 +4,8 @@ from peewee import *
 
 from reportMonaco import report
 
-path_to_database = pathlib.Path(__file__).parent.parent / 'database'
-db = SqliteDatabase(path_to_database/'drivers.db')
+
+database_proxy = DatabaseProxy()
 
 
 class Driver(Model):
@@ -15,19 +15,19 @@ class Driver(Model):
     result = TimeField(null=False)
 
     class Meta:
-        database = db
+        database = database_proxy
         table_name = 'drivers'
         order_by = 'result'
 
 
-def create_db(path):
-    if not (path/'drivers.db').exists():
+def create_db(path_DB, path_to_files_with_data):
+    if not path_DB.exists():
 
-        path_to_data = pathlib.Path(__file__).parent.parent / 'tests' / 'test_reportMonaco' / 'data'
-        data, _ = report.build_report(path_to_data)
+        data, _ = report.build_report(path_to_files_with_data)
 
-        Driver._meta.database = SqliteDatabase(path / 'drivers.db')
-        db.create_tables([Driver])
+        database_proxy.initialize(SqliteDatabase(path_DB))
+        database_proxy.create_tables([Driver])
+
         for abbr in data:
             name = data[abbr]['name']
             car = data[abbr]['car']

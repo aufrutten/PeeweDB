@@ -53,8 +53,8 @@ def find_driver(driver, path_to_folder_with_data) -> list:
 def build_report(path_to_data):
     """main data collector, get raw data, and return full data"""
 
-    if not (isinstance(path_to_data, str) or isinstance(path_to_data, pathlib.PosixPath)):
-        raise TypeError('path should be str or pathlib.PosixPath')
+    if not (isinstance(path_to_data, str) or isinstance(path_to_data, pathlib.Path)):
+        raise TypeError('path should be str or pathlib.Path')
 
     if isinstance(path_to_data, str):
         path_to_data = pathlib.PosixPath(path_to_data)

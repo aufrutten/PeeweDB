@@ -15,9 +15,13 @@ def create_app():
         FLASK_DEBUG=True,
         instance_relative_config=True,
     )
-    app.config['path_to_folder'] = str(pathlib.PosixPath(__file__).parent / 'tests' / 'test_reportMonaco' / 'data')
-    peeweeDB.create_db(pathlib.Path(__file__).parent/'database')
+    app.config['path_to_DATABASE'] = pathlib.Path(__file__).parent / 'database' / 'drivers.db'
+    app.config['path_to_folder_with_data'] = pathlib.Path(__file__).parent / 'tests/test_reportMonaco/data'
+
+    peeweeDB.create_db(app.config.get('path_to_DATABASE'), app.config.get('path_to_folder_with_data'))
+    peeweeDB.database_proxy.initialize(peeweeDB.SqliteDatabase(app.config.get('path_to_DATABASE')))
     app.config['drivers'] = peeweeDB.Driver
+
     return app
 
 

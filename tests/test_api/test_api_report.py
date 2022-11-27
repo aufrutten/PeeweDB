@@ -10,9 +10,7 @@ class TestV1:
         content = json.loads(response.json)
         result = {'name': 'Daniel Ricciardo',
                   'car': 'RED BULL RACING TAG HEUER',
-                  'start': {'date': '2018-05-24', 'time': '12:14:12.054'},
-                  'end': {'date': '2018-05-24', 'time': '12:11:24.067'},
-                  'result': '0:02:47.987000'}
+                  'result': '00:02:47.987000'}
         assert response.status_code == 200
         assert content['DRR'] == result
 

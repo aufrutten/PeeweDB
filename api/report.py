@@ -1,5 +1,10 @@
+import pathlib
+
 from flask import current_app
 from reportMonaco import report
+from controllersDB import peeweeDB
+
+# TODO: delete imports
 
 __doc_for_developers__ = \
     """
@@ -26,10 +31,9 @@ class V1:
     @staticmethod
     def get() -> dict:
         """api get request of HTTP, getting data from reportMonaco"""
-        path_to_folder_with_data = current_app.config.get('path_to_folder')
-        data, _ = report.build_report(path_to_folder_with_data)
+        data = {_id.abbr: {'name': _id.name, 'car': _id.car, 'result': str(_id.result)} for _id in peeweeDB.Driver}
         return data
 
 
 if __name__ == "__main__":  # pragma: no cover
-    V1.get()
+    pass
