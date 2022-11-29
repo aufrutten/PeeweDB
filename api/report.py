@@ -1,10 +1,6 @@
 import pathlib
-
-from flask import current_app
-from reportMonaco import report
 from controllersDB import peeweeDB
 
-# TODO: delete imports
 
 __doc_for_developers__ = \
     """
@@ -31,9 +27,13 @@ class V1:
     @staticmethod
     def get() -> dict:
         """api get request of HTTP, getting data from reportMonaco"""
-        data = {_id.abbr: {'name': _id.name, 'car': _id.car, 'result': str(_id.result)} for _id in peeweeDB.Driver}
+        database = peeweeDB.Driver.select().order_by(peeweeDB.Driver.result)
+        data = {n.abbr: {'name': n.name, 'car': n.car, 'result': str(n.result)} for n in database}
         return data
 
 
 if __name__ == "__main__":  # pragma: no cover
-    pass
+    path = pathlib.Path(__file__).parent.parent / 'database' / 'drivers.db'
+    peeweeDB.database_proxy.initialize(peeweeDB.SqliteDatabase(path))
+    for key, value in V1.get().items():
+        print(key, value['result'])

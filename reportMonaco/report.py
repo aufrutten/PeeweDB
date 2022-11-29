@@ -1,5 +1,4 @@
 import pathlib
-
 from . import parser_files
 from . import parser_cli
 
@@ -97,6 +96,7 @@ def main():
 
 if __name__ == "__main__":  # pragma: no cover
     path_to_lib = (pathlib.PosixPath(__file__).parent.parent / 'tests' / 'test_reportMonaco' / 'data')
+    main()
     # find_driver(123, str(path_to_lib))
     # get_drivers(path_to_lib)
     # main()

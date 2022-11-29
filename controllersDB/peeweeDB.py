@@ -1,4 +1,4 @@
-import pathlib
+import os
 
 from peewee import *
 
@@ -21,7 +21,13 @@ class Driver(Model):
 
 
 def create_db(path_DB, path_to_files_with_data):
-    if not path_DB.exists():
+    if path_DB.exists():
+        os.remove(path_DB)
+        print('database has been delete', path_DB.exists())
+        return create_db(path_DB, path_to_files_with_data)
+
+    elif not path_DB.exists():
+        print('database has been create', path_DB.exists())
 
         data, _ = report.build_report(path_to_files_with_data)
 
@@ -34,3 +40,6 @@ def create_db(path_DB, path_to_files_with_data):
             result = data[abbr]['result']
 
             Driver(abbr=abbr, name=name, car=car, result=result).save()
+        return True
+
+
